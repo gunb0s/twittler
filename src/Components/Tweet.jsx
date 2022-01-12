@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Response from './Response';
 import './Tweet.css';
+import Hashtag from './Hashtag';
 
 const Tweet = ({ tweet, user, handleClick, responseClick, changeTweet }) => {
   const [isEditable, setIsEditable] = useState(false)
@@ -18,7 +19,35 @@ const Tweet = ({ tweet, user, handleClick, responseClick, changeTweet }) => {
     setMsg(event.target.value)
     changeTweet(tweet.id, msg)
   }
+  const setLocalHash = (hash) => {
+    let ids = localStorage.getItem(hash)
+    if (ids) {
+      ids = JSON.parse(ids)
+      if (tweet.id in ids) {
+        ;
+      } else {
+        localStorage.setItem(hash, JSON.stringify([tweet.id, ...ids]))
+      }
+    } else {
+      localStorage.setItem(hash, JSON.stringify([tweet.id]))
+    }
+  }
+  const renderHashtag = (msg) => {
+    let match;
+    let idx = 0
+    let output = []
+    let rgx = /#[가-힣0-9a-zA-Z]+/g
+    while ((match = rgx.exec(msg)) != null) {
+        output.push(msg.slice(idx, match.index))
 
+        let hash = msg.slice(match.index, rgx.lastIndex)
+        setLocalHash(hash)
+        output.push(<Hashtag key={idx} value={hash}/>)
+        idx = rgx.lastIndex
+    }
+    output.push(msg.slice(idx, msg.length))
+    return output
+  }
   return (
     <li className="tweet" id={tweet.id}>
       <div className="tweet__profile">
@@ -43,7 +72,7 @@ const Tweet = ({ tweet, user, handleClick, responseClick, changeTweet }) => {
               className="tweet__message"
             >
               {/* TODO : 트윗 메세지가 있어야 합니다. */}
-              {msg}
+              {renderHashtag(msg)}
             </div>
             :
             <textarea
@@ -54,6 +83,8 @@ const Tweet = ({ tweet, user, handleClick, responseClick, changeTweet }) => {
             >
             </textarea>
         }
+        <div className="tweet__hashtags">
+        </div>
         <div className="tweet__response">
           <Response tweet={tweet} kind={"Like"} onClick={responseClick}/>
           <Response tweet={tweet} kind={"Dislike"} onClick={responseClick}/>

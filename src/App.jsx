@@ -13,6 +13,7 @@ import './App.css';
 const App = ({ dummyTweets, user }) => {
   const [tweets, setTweets] = useState(dummyTweets)
   const filteredTweets = tweets.filter(tweet => tweet.username === user.username);
+
   const handleTweet = (tweet) => {
     setTweets(tweets => {
       return [
