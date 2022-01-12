@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import Footer from '../Footer';
 import Tweet from '../Components/Tweet';
+import User from '../Components/User';
 import './Tweets.css';
 import dummyTweets from '../static/dummyData';
 
@@ -10,6 +11,7 @@ const Tweets = () => {
   const [tweets, setTweets] = useState(dummyTweets)
   const [username, setUsername] = useState("parkhacker")
   const [msg, setMsg] = useState("")
+  const [userFilter, setUserFilter] = useState("")
 
   const handleButtonClick = (event) => {
     const tweet = {
@@ -38,6 +40,9 @@ const Tweets = () => {
     // TODO : Tweet textarea 엘리먼트에 입력 시 작동하는 함수를 완성하세요.
     setMsg(event.target.value)
   };
+  const handleChangeUserFilter = (event) => {
+    setUserFilter(event.target.value)
+  }
 
   return (
     <React.Fragment>
@@ -85,11 +90,21 @@ const Tweets = () => {
           </div>
         </div>
       </div>
-      <div className="tweet__selectUser"></div>
+      <div className="tweet__selectUser">
+        <select name="user" value={userFilter} onChange={handleChangeUserFilter}>
+          <option value=''>"click to filter tweets by username"</option>
+          {
+            tweets.map(tweet => <User key={tweet.id} tweet={tweet}/>)
+          }
+        </select>
+      </div>
       <ul className="tweets">
         {/* TODO : 하나의 트윗이 아니라, 주어진 트윗 목록(dummyTweets) 갯수에 맞게 보여줘야 합니다. */}
         {
-          tweets.map(tweet => <Tweet key={tweet.id} tweet={tweet} />)
+          userFilter === '' ? 
+            tweets.map(tweet => <Tweet key={tweet.id} tweet={tweet} />)
+              :
+            tweets.filter(tweet => tweet.username === userFilter).map(tweet => <Tweet key={tweet.id} tweet={tweet} />)
         }
       </ul>
       <Footer />
