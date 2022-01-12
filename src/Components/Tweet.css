@@ -29,6 +29,12 @@
   align-items: center;
 }
 
+
+.tweet__userInfo--wrapper {
+  position: relative;
+  width:100%;
+}
+
 .tweet__userInfo--wrapper > .tweet__username {
   display: inline-block;
   color: var(--bold-text-color);
@@ -40,6 +46,18 @@
   display: inline-block;
   color: var(--sub-text-color);
   margin-left: 0.5rem;
+}
+
+.tweet__userInfo--wrapper > .tweet__remove {
+  display: inline-block;
+  position: absolute;
+  right: 0;
+}
+
+.tweet__userInfo--wrapper .fa-trash {
+  padding: 0;
+  font-size: 1rem;
+  cursor: pointer;
 }
 
 .tweet__userInfo--buttonWrapper > .tweet__deleteButton {

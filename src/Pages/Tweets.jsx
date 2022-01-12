@@ -43,6 +43,11 @@ const Tweets = () => {
   const handleChangeUserFilter = (event) => {
     setUserFilter(event.target.value)
   }
+  const handleTrashClick = (event) => {
+    let id = event.currentTarget.id
+    let filteredTweets = tweets.filter(tweet => tweet.id !== Number(id))
+    setTweets(tweets => filteredTweets)
+  }
 
   return (
     <React.Fragment>
@@ -102,9 +107,9 @@ const Tweets = () => {
         {/* TODO : 하나의 트윗이 아니라, 주어진 트윗 목록(dummyTweets) 갯수에 맞게 보여줘야 합니다. */}
         {
           userFilter === '' ? 
-            tweets.map(tweet => <Tweet key={tweet.id} tweet={tweet} />)
+            tweets.map(tweet => <Tweet key={tweet.id} tweet={tweet} handleClick={handleTrashClick} />)
               :
-            tweets.filter(tweet => tweet.username === userFilter).map(tweet => <Tweet key={tweet.id} tweet={tweet} />)
+            tweets.filter(tweet => tweet.username === userFilter).map(tweet => <Tweet key={tweet.id} tweet={tweet} handleClick={handleTrashClick} />)
         }
       </ul>
       <Footer />
