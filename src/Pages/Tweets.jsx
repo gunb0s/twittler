@@ -4,11 +4,9 @@ import Footer from '../Footer';
 import Tweet from '../Components/Tweet';
 import User from '../Components/User';
 import './Tweets.css';
-import dummyTweets from '../static/dummyData';
 
-const Tweets = () => {
+const Tweets = ({ tweets, handleTweet, handleRemove }) => {
   // TODO : 새로 트윗을 작성하고 전송할 수 있게 useState를 적절히 활용하세요.
-  const [tweets, setTweets] = useState(dummyTweets)
   const [username, setUsername] = useState("parkhacker")
   const [msg, setMsg] = useState("")
   const [userFilter, setUserFilter] = useState("")
@@ -23,12 +21,7 @@ const Tweets = () => {
     };
     // TODO : Tweet button 엘리먼트 클릭시 작동하는 함수를 완성하세요.
     // 트윗 전송이 가능하게 작성해야 합니다.
-    setTweets(tweets => {
-      return [
-        tweet,
-        ...tweets
-      ]
-    })
+    handleTweet(tweet)
   };
 
   const handleChangeUser = (event) => {
@@ -45,8 +38,7 @@ const Tweets = () => {
   }
   const handleTrashClick = (event) => {
     let id = event.currentTarget.id
-    let filteredTweets = tweets.filter(tweet => tweet.id !== Number(id))
-    setTweets(tweets => filteredTweets)
+    handleRemove(id)
   }
 
   return (
