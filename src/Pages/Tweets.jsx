@@ -5,17 +5,17 @@ import Tweet from '../Components/Tweet';
 import User from '../Components/User';
 import './Tweets.css';
 
-const Tweets = ({ tweets, handleTweet, handleRemove }) => {
+const Tweets = ({ user, tweets, handleTweet, handleRemove }) => {
   // TODO : 새로 트윗을 작성하고 전송할 수 있게 useState를 적절히 활용하세요.
-  const [username, setUsername] = useState("parkhacker")
+  // const [username, setUsername] = useState("parkhacker")
   const [msg, setMsg] = useState("")
   const [userFilter, setUserFilter] = useState("")
 
   const handleButtonClick = (event) => {
     const tweet = {
       id: Date.now(),
-      username: username,
-      picture: "https://randomuser.me/api/portraits/men/98.jpg",
+      username: user.username,
+      picture: user.picture,
       content: msg,
       createdAt: new Date().toISOString()
     };
@@ -24,10 +24,10 @@ const Tweets = ({ tweets, handleTweet, handleRemove }) => {
     handleTweet(tweet)
   };
 
-  const handleChangeUser = (event) => {
-    // TODO : Tweet input 엘리먼트에 입력 시 작동하는 함수를 완성하세요.
-    setUsername(event.target.value)
-  };
+  // const handleChangeUser = (event) => {
+  //   // TODO : Tweet input 엘리먼트에 입력 시 작동하는 함수를 완성하세요.
+  //   setUsername(event.target.value)
+  // };
 
   const handleChangeMsg = (event) => {
     // TODO : Tweet textarea 엘리먼트에 입력 시 작동하는 함수를 완성하세요.
@@ -46,17 +46,16 @@ const Tweets = ({ tweets, handleTweet, handleRemove }) => {
       <div className="tweetForm__container">
         <div className="tweetForm__wrapper">
           <div className="tweetForm__profile">
-            <img src="https://randomuser.me/api/portraits/men/98.jpg" />
+            <img src={user.picture} />
           </div>
           <div className="tweetForm__inputContainer">
             <div className="tweetForm__inputWrapper">
               <div className="tweetForm__input">
                 <input
                   type="text"
-                  // defaultValue="parkhacker"
-                  value={username}
+                  value={user.username}
                   placeholder="your username here.."
-                  onChange={handleChangeUser}
+                  // onChange={handleChangeUser}
                   className="tweetForm__input--username"
                 ></input>
                 {/* TODO : 트윗을 작성할 수 있는 textarea 엘리먼트를 작성하세요. */}
