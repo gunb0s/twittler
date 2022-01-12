@@ -39,8 +39,7 @@ const Tweets = ({ user, tweets, handleTweet, handleRemove, responseClick, change
   const handleChangeUserFilter = (event) => {
     setUserFilter(event.target.value)
   }
-  const handleTrashClick = (event) => {
-    let id = event.currentTarget.id
+  const handleTrashClick = (id) => {
     handleRemove(id)
   }
 

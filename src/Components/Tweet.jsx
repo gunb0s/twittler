@@ -19,6 +19,9 @@ const Tweet = ({ tweet, user, handleClick, responseClick, changeTweet }) => {
     setMsg(event.target.value)
     changeTweet(tweet.id, msg)
   }
+  const handleTrashClick = () => {
+    handleClick(tweet.id)
+  }
   const setLocalHash = (hash) => {
     let ids = localStorage.getItem(hash)
     if (ids) {
@@ -60,7 +63,7 @@ const Tweet = ({ tweet, user, handleClick, responseClick, changeTweet }) => {
             <span className="tweet__username">{tweet.username}</span>
             {/* TODO : 트윗 생성 일자가 있어야 합니다. parsedDate를 이용하세요. */}
             <span className="tweet__createdAt">{parsedDate}</span>
-            <span className="tweet__remove" id={tweet.id} onClick={handleClick}>
+            <span className="tweet__remove" onClick={handleTrashClick}>
               <i className="fas fa-trash"></i>
             </span>
           </div>
