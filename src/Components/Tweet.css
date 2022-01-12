@@ -88,3 +88,13 @@
 .tweet__message {
   padding: 0.5rem;
 }
+
+.tweet__message--edit {
+  padding: 1rem;
+  width: 100%;
+  height:50%;
+}
+
+.hide {
+  display: none;
+}

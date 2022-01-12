@@ -5,13 +5,14 @@ import Tweet from '../Components/Tweet';
 import User from '../Components/User';
 import './Tweets.css';
 
-const Tweets = ({ user, tweets, handleTweet, handleRemove }) => {
+const Tweets = ({ user, tweets, handleTweet, handleRemove, responseClick, changeTweet }) => {
   // TODO : 새로 트윗을 작성하고 전송할 수 있게 useState를 적절히 활용하세요.
   // const [username, setUsername] = useState("parkhacker")
   const [msg, setMsg] = useState("")
   const [userFilter, setUserFilter] = useState("")
 
-  const handleButtonClick = (event) => {
+  const handleButtonClick = () => {
+    if (msg === "") return;
     const tweet = {
       id: Date.now(),
       username: user.username,
@@ -22,6 +23,7 @@ const Tweets = ({ user, tweets, handleTweet, handleRemove }) => {
     // TODO : Tweet button 엘리먼트 클릭시 작동하는 함수를 완성하세요.
     // 트윗 전송이 가능하게 작성해야 합니다.
     handleTweet(tweet)
+    setMsg("")
   };
 
   // const handleChangeUser = (event) => {
@@ -51,13 +53,12 @@ const Tweets = ({ user, tweets, handleTweet, handleRemove }) => {
           <div className="tweetForm__inputContainer">
             <div className="tweetForm__inputWrapper">
               <div className="tweetForm__input">
-                <input
-                  type="text"
-                  value={user.username}
-                  placeholder="your username here.."
+                <div
+                  // type="text"
+                  // placeholder="your username here.."
                   // onChange={handleChangeUser}
                   className="tweetForm__input--username"
-                ></input>
+                >{user.username}</div>
                 {/* TODO : 트윗을 작성할 수 있는 textarea 엘리먼트를 작성하세요. */}
                 <textarea
                   placeholder='you message here..'
@@ -98,9 +99,26 @@ const Tweets = ({ user, tweets, handleTweet, handleRemove }) => {
         {/* TODO : 하나의 트윗이 아니라, 주어진 트윗 목록(dummyTweets) 갯수에 맞게 보여줘야 합니다. */}
         {
           userFilter === '' ? 
-            tweets.map(tweet => <Tweet key={tweet.id} tweet={tweet} handleClick={handleTrashClick} />)
-              :
-            tweets.filter(tweet => tweet.username === userFilter).map(tweet => <Tweet key={tweet.id} tweet={tweet} handleClick={handleTrashClick} />)
+            tweets.map(tweet => 
+              <Tweet 
+                key={tweet.id} 
+                tweet={tweet}
+                user={user} 
+                handleClick={handleTrashClick}
+                responseClick={responseClick}
+                changeTweet={changeTweet}
+              />)
+                :
+            tweets.filter(tweet => tweet.username === userFilter)
+                  .map(tweet => 
+                    <Tweet 
+                      key={tweet.id} 
+                      tweet={tweet}
+                      user={user} 
+                      handleClick={handleTrashClick}
+                      responseClick={responseClick}
+                      changeTweet={changeTweet}
+                    />)
         }
       </ul>
       <Footer />

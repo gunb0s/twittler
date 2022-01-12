@@ -26,6 +26,38 @@ const App = ({ dummyTweets, user }) => {
       return tweets.filter(tweet => tweet.id !== Number(id))
     })
   }
+  const responseClick = (event) => {
+    let currTarget = event.currentTarget
+    let tweetId = currTarget.parentElement.parentElement.parentElement.id
+    let type = currTarget.children[0].classList[1]
+
+    setTweets(tweets => {
+      return tweets.map(tweet => {
+        if (tweet.id !== Number(tweetId)) {
+          return tweet
+        } else {
+          if (!(type in tweet)) {
+            tweet[type] = 0
+          }
+          tweet[type] = tweet[type] + 1
+          return tweet
+        }
+      })
+    })
+  }
+
+  const changeTweet = (id, msg) => {
+    setTweets(tweets => {
+      return tweets.map(tweet => {
+        if (tweet.id === Number(id)) {
+          tweet["content"] = msg
+          return tweet;
+        } else {
+          return tweet
+        }
+      })
+    })
+  }
 
   return (
     <div className="App">
@@ -39,6 +71,8 @@ const App = ({ dummyTweets, user }) => {
               tweets={tweets}
               handleTweet={handleTweet}
               handleRemove={handleRemove}
+              responseClick={responseClick}
+              changeTweet={changeTweet}
             />
           </Route>
           <Route path="/about">
