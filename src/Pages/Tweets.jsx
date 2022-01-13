@@ -5,12 +5,11 @@ import Tweet from '../Components/Tweet';
 import User from '../Components/User';
 import './Tweets.css';
 
-const Tweets = ({ user, tweets, handleTweet, handleRemove, responseClick, changeTweet }) => {
+const Tweets = ({ user, tweets, handleTweet, handleRemove, responseClick, changeTweet, changeHashTweet }) => {
   // TODO : 새로 트윗을 작성하고 전송할 수 있게 useState를 적절히 활용하세요.
   // const [username, setUsername] = useState("parkhacker")
   const [msg, setMsg] = useState("")
   const [userFilter, setUserFilter] = useState("")
-
 
   const handleButtonClick = () => {
     if (msg === "") return;
@@ -107,6 +106,7 @@ const Tweets = ({ user, tweets, handleTweet, handleRemove, responseClick, change
                 handleClick={handleTrashClick}
                 responseClick={responseClick}
                 changeTweet={changeTweet}
+                changeHashTweet={changeHashTweet}
               />)
                 :
             tweets.filter(tweet => tweet.username === userFilter)
@@ -118,6 +118,7 @@ const Tweets = ({ user, tweets, handleTweet, handleRemove, responseClick, change
                       handleClick={handleTrashClick}
                       responseClick={responseClick}
                       changeTweet={changeTweet}
+                      changeHashTweet={changeHashTweet}
                     />)
         }
       </ul>

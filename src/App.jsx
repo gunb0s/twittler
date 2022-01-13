@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 // TODO : React Router DOM을 설치 후, import 구문을 이용하여 BrowserRouter, Route, Switch 컴포넌트를 불러옵니다.
 
@@ -12,7 +12,21 @@ import './App.css';
 
 const App = ({ dummyTweets, user }) => {
   const [tweets, setTweets] = useState(dummyTweets)
+  const [hash, setHash] = useState("")
   const filteredTweets = tweets.filter(tweet => tweet.username === user.username);
+  useEffect(() => {
+    let lsTweets = JSON.parse(localStorage.getItem("tweets"))
+    if (hash === "") {
+      setTweets(lsTweets)
+      return
+    }
+    let hashTweetIds = JSON.parse(localStorage.getItem("hashs"))[hash]
+    setTweets(() => {
+      return hashTweetIds.map(id => {
+        return lsTweets.filter(tweet => tweet.id === id)[0] // ineffiency..
+      })
+    })
+  }, [hash])
 
   const handleTweet = (tweet) => {
     setTweets(tweets => {
@@ -59,11 +73,14 @@ const App = ({ dummyTweets, user }) => {
       })
     })
   }
+  const changeHashTweet = (hash) => {
+    setHash(hash)
+  }
 
   return (
     <div className="App">
       <main>
-        <Sidebar />
+        <Sidebar changeHashTweet={changeHashTweet}/>
         <section className="features">
         <Switch>
           <Route exact path="/">
@@ -74,6 +91,18 @@ const App = ({ dummyTweets, user }) => {
               handleRemove={handleRemove}
               responseClick={responseClick}
               changeTweet={changeTweet}
+              changeHashTweet={changeHashTweet}
+            />
+          </Route>
+          <Route exact path={`/${hash}`}>
+            <Tweets 
+                user={user}
+                tweets={tweets}
+                handleTweet={handleTweet}
+                handleRemove={handleRemove}
+                responseClick={responseClick}
+                changeTweet={changeTweet}
+                changeHashTweet={changeHashTweet}
             />
           </Route>
           <Route path="/about">

@@ -3,7 +3,7 @@ import Response from './Response';
 import './Tweet.css';
 import Hashtag from './Hashtag';
 
-const Tweet = ({ tweet, user, handleClick, responseClick, changeTweet }) => {
+const Tweet = ({ tweet, user, handleClick, responseClick, changeTweet, changeHashTweet }) => {
   const [isEditable, setIsEditable] = useState(false)
   const [msg, setMsg] = useState(tweet.content)
   const parsedDate = new Date(tweet.createdAt).toLocaleDateString('ko-kr');
@@ -22,30 +22,17 @@ const Tweet = ({ tweet, user, handleClick, responseClick, changeTweet }) => {
   const handleTrashClick = () => {
     handleClick(tweet.id)
   }
-  const setLocalHash = (hash) => {
-    let ids = localStorage.getItem(hash)
-    if (ids) {
-      ids = JSON.parse(ids)
-      if (tweet.id in ids) {
-        ;
-      } else {
-        localStorage.setItem(hash, JSON.stringify([tweet.id, ...ids]))
-      }
-    } else {
-      localStorage.setItem(hash, JSON.stringify([tweet.id]))
-    }
-  }
   const renderHashtag = (msg) => {
     let match;
     let idx = 0
     let output = []
     let rgx = /#[가-힣0-9a-zA-Z]+/g
+    
     while ((match = rgx.exec(msg)) != null) {
         output.push(msg.slice(idx, match.index))
 
         let hash = msg.slice(match.index, rgx.lastIndex)
-        setLocalHash(hash)
-        output.push(<Hashtag key={idx} value={hash}/>)
+        output.push(<Hashtag handleHashClick={changeHashTweet} key={idx} value={hash}/>)
         idx = rgx.lastIndex
     }
     output.push(msg.slice(idx, msg.length))
