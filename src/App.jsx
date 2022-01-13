@@ -28,6 +28,24 @@ const App = ({ dummyTweets, user }) => {
     })
   }, [hash])
 
+  const manageData = (tweet) => {
+    let rgx = /#[가-힣0-9a-zA-Z]+/g
+    let lsTweets = JSON.parse(localStorage.getItem("tweets"))
+    let lsHashs = JSON.parse(localStorage.getItem("hashs"))
+    let hashInTweet = tweet.content.match(rgx)
+    lsTweets = [tweet, ...lsTweets]
+    if (hashInTweet !== null) {
+      hashInTweet.forEach(hash => {
+        if (!(hash in lsHashs)) {
+          lsHashs[hash] = []
+        }
+        lsHashs[hash].push(tweet.id)
+      })
+    }
+    localStorage.setItem("tweets", JSON.stringify(lsTweets))
+    localStorage.setItem("hashs", JSON.stringify(lsHashs))
+  }
+
   const handleTweet = (tweet) => {
     setTweets(tweets => {
       return [
@@ -35,6 +53,7 @@ const App = ({ dummyTweets, user }) => {
         ...tweets
       ]
     })
+    manageData(tweet)
   }
   const handleRemove = (id) => {
     setTweets(tweets => {
@@ -113,6 +132,7 @@ const App = ({ dummyTweets, user }) => {
               me={user}
               tweets={filteredTweets}
               handleRemove={handleRemove}
+              changeHashTweet={changeHashTweet}
             />
           </Route>
           {/* TODO : 유어클래스를 참고해서, 테스트 케이스를 통과하세요.

@@ -1,6 +1,9 @@
 # TODO
 
     handle storage when edit tweets
+    When modified tweet, find previous hash list and delete it,
+    and add id to new hash list
+    When delete tweet, i think easy thing..
 
 # Issue 1
 
