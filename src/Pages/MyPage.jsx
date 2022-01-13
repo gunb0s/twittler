@@ -3,12 +3,9 @@ import Footer from '../Footer';
 import Tweet from '../Components/Tweet';
 import './MyPage.css';
 
-const MyPage = ({ me, tweets, handleRemove, changeHashTweet }) => {
+const MyPage = ({ me, tweets, onTrashClick, onHashClick }) => {
   // TODO : 주어진 트윗 목록(dummyTweets)중 현재 유져인 parkhacker의 트윗만 보여줘야 합니다.
-  const handleTrashClick = (event) => {
-    let id = event.currentTarget.id
-    handleRemove(id)
-  }
+  const filteredTweets = tweets.filter(tweet => tweet.username === me.username);
   return (
     <section className="myInfo">
       <div className="myInfo__container">
@@ -26,7 +23,7 @@ const MyPage = ({ me, tweets, handleRemove, changeHashTweet }) => {
       </div>
       <ul className="tweets__mypage">
         {/* TODO : 주어진 트윗 목록(dummyTweets)중 현재 유져인 parkhacker의 트윗만 보여줘야 합니다. */}
-        {tweets.map(tweet => <Tweet tweet={tweet} key={tweet.id} changeHashTweet={changeHashTweet} handleClick={handleTrashClick}/>)}
+        {filteredTweets.map(tweet => <Tweet tweet={tweet} key={tweet.id} onHashClick={onHashClick} onTrashClick={onTrashClick}/>)}
       </ul>
       <Footer />
     </section>

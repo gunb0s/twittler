@@ -5,13 +5,13 @@ import Tweet from '../Components/Tweet';
 import User from '../Components/User';
 import './Tweets.css';
 
-const Tweets = ({ user, tweets, handleTweet, handleRemove, responseClick, changeTweet, changeHashTweet }) => {
+const Tweets = ({ user, tweets, onTweetSubmitClick, onTrashClick, onResponseClick, onTweetChange, onHashClick }) => {
   // TODO : 새로 트윗을 작성하고 전송할 수 있게 useState를 적절히 활용하세요.
   // const [username, setUsername] = useState("parkhacker")
   const [msg, setMsg] = useState("")
   const [userFilter, setUserFilter] = useState("")
 
-  const handleButtonClick = () => {
+  const handleTweetSubmitClick = () => {
     if (msg === "") return;
     const tweet = {
       id: Date.now(),
@@ -22,7 +22,7 @@ const Tweets = ({ user, tweets, handleTweet, handleRemove, responseClick, change
     };
     // TODO : Tweet button 엘리먼트 클릭시 작동하는 함수를 완성하세요.
     // 트윗 전송이 가능하게 작성해야 합니다.
-    handleTweet(tweet)
+    onTweetSubmitClick(tweet)
     setMsg("")
   };
 
@@ -38,10 +38,6 @@ const Tweets = ({ user, tweets, handleTweet, handleRemove, responseClick, change
   const handleChangeUserFilter = (event) => {
     setUserFilter(event.target.value)
   }
-  const handleTrashClick = (id) => {
-    handleRemove(id)
-  }
-
   return (
     <React.Fragment>
       <div className="tweetForm__container">
@@ -77,7 +73,7 @@ const Tweets = ({ user, tweets, handleTweet, handleRemove, responseClick, change
               <div className="tweetForm__submitIcon"></div>
               {/* TODO : 작성한 트윗을 전송할 수 있는 button 엘리먼트를 작성하세요. */}
               <button 
-                onClick={handleButtonClick}
+                onClick={handleTweetSubmitClick}
                 className="tweetForm__submitButton"
               >
                 Tweet
@@ -103,10 +99,10 @@ const Tweets = ({ user, tweets, handleTweet, handleRemove, responseClick, change
                 key={tweet.id} 
                 tweet={tweet}
                 user={user} 
-                handleClick={handleTrashClick}
-                responseClick={responseClick}
-                changeTweet={changeTweet}
-                changeHashTweet={changeHashTweet}
+                onTrashClick={onTrashClick}
+                onResponseClick={onResponseClick}
+                onTweetChange={onTweetChange}
+                onHashClick={onHashClick}
               />)
                 :
             tweets.filter(tweet => tweet.username === userFilter)
@@ -115,10 +111,10 @@ const Tweets = ({ user, tweets, handleTweet, handleRemove, responseClick, change
                       key={tweet.id} 
                       tweet={tweet}
                       user={user} 
-                      handleClick={handleTrashClick}
-                      responseClick={responseClick}
-                      changeTweet={changeTweet}
-                      changeHashTweet={changeHashTweet}
+                      onTrashClick={onTrashClick}
+                      onResponseClick={onResponseClick}
+                      onTweetChange={onTweetChange}
+                      onHashClick={onHashClick}
                     />)
         }
       </ul>

@@ -3,7 +3,7 @@ import Response from './Response';
 import './Tweet.css';
 import Hashtag from './Hashtag';
 
-const Tweet = ({ tweet, user, handleClick, responseClick, changeTweet, changeHashTweet }) => {
+const Tweet = ({ tweet, user, onTrashClick, onResponseClick, onTweetChange, onHashClick }) => {
   const [isEditable, setIsEditable] = useState(false)
   const [msg, setMsg] = useState(tweet.content)
   const parsedDate = new Date(tweet.createdAt).toLocaleDateString('ko-kr');
@@ -15,12 +15,12 @@ const Tweet = ({ tweet, user, handleClick, responseClick, changeTweet, changeHas
     if (event.key === "Enter")
       setIsEditable(false);
   }
-  const handleChange = (event) => {
+  const handleTweetChange = (event) => {
     setMsg(event.target.value)
-    changeTweet(tweet.id, msg)
+    onTweetChange(tweet.id, msg)
   }
   const handleTrashClick = () => {
-    handleClick(tweet.id)
+    onTrashClick(tweet.id)
   }
   const renderHashtag = (msg) => {
     let match;
@@ -32,7 +32,7 @@ const Tweet = ({ tweet, user, handleClick, responseClick, changeTweet, changeHas
         output.push(msg.slice(idx, match.index))
 
         let hash = msg.slice(match.index, rgx.lastIndex)
-        output.push(<Hashtag handleHashClick={changeHashTweet} key={idx} value={hash}/>)
+        output.push(<Hashtag onHashClick={onHashClick} key={idx} value={hash}/>)
         idx = rgx.lastIndex
     }
     output.push(msg.slice(idx, msg.length))
@@ -67,7 +67,7 @@ const Tweet = ({ tweet, user, handleClick, responseClick, changeTweet, changeHas
             :
             <textarea
               value={msg}
-              onChange={handleChange}
+              onChange={handleTweetChange}
               onKeyDown={handleKeyDown}
               className="tweet__message--edit"
             >
@@ -76,8 +76,8 @@ const Tweet = ({ tweet, user, handleClick, responseClick, changeTweet, changeHas
         <div className="tweet__hashtags">
         </div>
         <div className="tweet__response">
-          <Response tweet={tweet} kind={"Like"} onClick={responseClick}/>
-          <Response tweet={tweet} kind={"Dislike"} onClick={responseClick}/>
+          <Response tweet={tweet} kind={"Like"} onResponseClick={onResponseClick}/>
+          <Response tweet={tweet} kind={"Dislike"} onResponseClick={onResponseClick}/>
         </div>
       </div>
     </li>

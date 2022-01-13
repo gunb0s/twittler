@@ -13,7 +13,6 @@ import './App.css';
 const App = ({ dummyTweets, user }) => {
   const [tweets, setTweets] = useState(dummyTweets)
   const [hash, setHash] = useState("")
-  const filteredTweets = tweets.filter(tweet => tweet.username === user.username);
   useEffect(() => {
     let lsTweets = JSON.parse(localStorage.getItem("tweets"))
     if (hash === "") {
@@ -46,7 +45,7 @@ const App = ({ dummyTweets, user }) => {
     localStorage.setItem("hashs", JSON.stringify(lsHashs))
   }
 
-  const handleTweet = (tweet) => {
+  const onTweetSubmitClick = (tweet) => {
     setTweets(tweets => {
       return [
         tweet,
@@ -55,19 +54,18 @@ const App = ({ dummyTweets, user }) => {
     })
     manageData(tweet)
   }
-  const handleRemove = (id) => {
+  const handleTrashClick = (id) => {
     setTweets(tweets => {
       return tweets.filter(tweet => tweet.id !== Number(id))
     })
   }
-  const responseClick = (event) => {
+  const handleResponseClick = (event, id) => {
     let currTarget = event.currentTarget
-    let tweetId = currTarget.parentElement.parentElement.parentElement.id
     let type = currTarget.children[0].classList[1]
 
     setTweets(tweets => {
       return tweets.map(tweet => {
-        if (tweet.id !== Number(tweetId)) {
+        if (tweet.id !== Number(id)) {
           return tweet
         } else {
           if (!(type in tweet)) {
@@ -80,7 +78,7 @@ const App = ({ dummyTweets, user }) => {
     })
   }
 
-  const changeTweet = (id, msg) => {
+  const handleTweetChange = (id, msg) => {
     setTweets(tweets => {
       return tweets.map(tweet => {
         if (tweet.id === Number(id)) {
@@ -92,36 +90,36 @@ const App = ({ dummyTweets, user }) => {
       })
     })
   }
-  const changeHashTweet = (hash) => {
+  const handleHashClick = (hash) => {
     setHash(hash)
   }
 
   return (
     <div className="App">
       <main>
-        <Sidebar changeHashTweet={changeHashTweet}/>
+        <Sidebar onHashClick={handleHashClick}/>
         <section className="features">
         <Switch>
           <Route exact path="/">
             <Tweets 
               user={user}
               tweets={tweets}
-              handleTweet={handleTweet}
-              handleRemove={handleRemove}
-              responseClick={responseClick}
-              changeTweet={changeTweet}
-              changeHashTweet={changeHashTweet}
+              onTweetSubmitClick={onTweetSubmitClick}
+              onTrashClick={handleTrashClick}
+              onResponseClick={handleResponseClick}
+              onTweetChange={handleTweetChange}
+              onHashClick={handleHashClick}
             />
           </Route>
           <Route exact path={`/${hash}`}>
             <Tweets 
                 user={user}
                 tweets={tweets}
-                handleTweet={handleTweet}
-                handleRemove={handleRemove}
-                responseClick={responseClick}
-                changeTweet={changeTweet}
-                changeHashTweet={changeHashTweet}
+                onTweetSubmitClick={onTweetSubmitClick}
+                onTrashClick={handleTrashClick}
+                onResponseClick={handleResponseClick}
+                onTweetChange={handleTweetChange}
+                onHashClick={handleHashClick}
             />
           </Route>
           <Route path="/about">
@@ -130,9 +128,9 @@ const App = ({ dummyTweets, user }) => {
           <Route path="/mypage">
             <MyPage
               me={user}
-              tweets={filteredTweets}
-              handleRemove={handleRemove}
-              changeHashTweet={changeHashTweet}
+              tweets={tweets}
+              onTrashClick={handleTrashClick}
+              onHashClick={handleHashClick}
             />
           </Route>
           {/* TODO : 유어클래스를 참고해서, 테스트 케이스를 통과하세요.

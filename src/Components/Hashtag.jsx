@@ -2,12 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./Hashtag.css"
 
-const Hashtag = ({ value, handleHashClick }) => {
-    const onClick = () => {
-        handleHashClick(value)
+const Hashtag = ({ value, onHashClick }) => {
+    const handleHashClick = () => {
+        onHashClick(value)
     }
     return (
-        <Link to={`/${value}`} onClick={onClick}>
+        <Link to={`/${value}`} onClick={handleHashClick}>
             <span className="hashtag">{value}</span>
         </Link>
     )
